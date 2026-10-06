@@ -1,0 +1,14 @@
+{
+  "width": 6144,
+  "height": 2560,
+  "bits_per_channel": 16,
+  "bytes": 64235847,
+  "sha256": "f84d5621777eeebaac6bdd5c884d304490d26bfa01c87b21d8d12a40fbfbfc51",
+  "gpu": "NVIDIA L4",
+  "gpu_memory_reported": "23034 MiB",
+  "selected_model": "cgi_4x",
+  "tiles": 55,
+  "inference_seconds": 6.25,
+  "same_bytes_as_existing_master": false,
+  "status": "completed"
+}

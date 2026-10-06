@@ -8,7 +8,7 @@ from pathlib import Path
 import modal
 
 APP_NAME = "batch-gpu-upscale"
-VOLUME_NAME = "gpu-upscale-models"
+VOLUME_NAME = os.environ.get("UPSCALE_MODEL_VOLUME", "gpu-upscale-models")
 
 TOPAZ_MODELS = {
     "cgi_2x": {
@@ -123,7 +123,10 @@ class TopazEngine:
                     "sr": ort.InferenceSession(sr_path, providers=providers),
                     "info": info,
                 }
-        print("Topaz GPU Engine initialized on Nvidia L4 (Pure Super-Resolution Mode).")
+        gpu = subprocess.run(["nvidia-smi", "--query-gpu=name,memory.total", "--format=csv,noheader"], capture_output=True, text=True, check=True)
+        print("GPU hardware: " + gpu.stdout.strip())
+        for key, entry in self.sessions.items():
+            print(f"Model ready: {key}; providers: {entry['sr'].get_providers()}")
 
     @modal.method()
     def upscale(

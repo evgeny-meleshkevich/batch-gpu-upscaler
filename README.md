@@ -42,9 +42,18 @@ Or double-click `run.command` on macOS. GPU calls use your provider account and 
 - `run.command`: macOS folder picker.
 - `test_local.py`: local checks of assembly, PNG output and model selection. These tests do not execute neural networks or allocate GPUs.
 
-## Evidence and validation
+## Actual cloud run: 6 October 2026
 
-Existing service outputs inspected on 6 October 2026 include a 6144×2560 RGB PNG with 16 bits per channel, produced from a 1536×640 source. The portfolio publishes that master and matching source/result crops. This review did not repeat GPU execution or measure speed/cost. L4 is confirmed by source configuration; no new runtime hardware trace was collected.
+A real run of this client completed with the CGI/Art 4× model. The server reported NVIDIA L4 (23034 MiB), loaded five model variants with CUDAExecutionProvider and processed 55 tiles. Tile inference took 6.25 s; the client call until receiving the file took 113.29 s, including worker preparation, inference, PNG encoding and transfer. These are one-run measurements, not general performance guarantees.
+
+The downloaded output was independently verified: 6144×2560 RGB PNG, 16 bits per channel, 64,235,847 bytes. The source was 1536×640. [Machine-readable verification](docs/live-verification.json). The portfolio comparison and downloadable master now use this new output.
+
+![Actual cloud-run report](docs/cloud-run-en.png)
+![Downloaded PNG verification](docs/result-en.png)
+
+These screenshots present reports compiled from actual client/server logs and file inspection, not a graphical application interface. Full logs remain private to exclude account details.
+
+To reuse an existing authorised model volume, set `UPSCALE_MODEL_VOLUME` to its name before starting the client. Otherwise the default is `gpu-upscale-models`.
 
 The public package is adapted from the existing service: model download/decryption is replaced by supplied-file validation, incorrect model fallback is rejected, automatic estimation is opt-in, and billing/shutdown guarantees are removed. The original service remains separate.
 
